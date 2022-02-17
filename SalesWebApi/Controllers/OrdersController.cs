@@ -19,19 +19,36 @@ namespace SalesWebApi.Controllers
         {
             _context = context;
         }
+        // added the following method
+        // PUT: api/Orders/Recalc/5
+        [HttpPut("recalc/{orderId}")]
+        public async Task<IActionResult> RecalculateOrder(int orderId) {
+            var order = await _context.Orders.FindAsync(orderId);
+
+            var sum = order.Orderlines.Sum(x => x.Quantity * x.Price);
+
+            order.Total = sum;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
 
         // GET: api/Orders
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders.Include(x => x.Customer).ToListAsync(); // added Include... to include Customer foreign key data
         }
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders
+                                    .Include(x => x.Customer) // added to include Customer data for the order
+                                    .Include(x => x.Orderlines) // added to include Orderline data for the order
+                                    .SingleOrDefaultAsync(x => x.Id == id);
 
             if (order == null)
             {

@@ -20,6 +20,8 @@ namespace SalesWebApi.Models {
         // virtual instance required for Entity Framework to recognize foreign key
         // virtual means this property is in this class but not in the database
         public virtual Customer Customer { get; set; }
+        // allows us to ask Entity Framework to fill in all line items when we read an order
+        public virtual IEnumerable<Orderline> Orderlines { get; set; }
         // default constructor
         public Order() { }
     }

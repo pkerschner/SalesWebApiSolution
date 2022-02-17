@@ -10,6 +10,7 @@ namespace SalesWebApi.Models {
         // properties
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Orderline> Orderlines { get; set; }
         // constructor
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options) { }
         // to use fluent api
