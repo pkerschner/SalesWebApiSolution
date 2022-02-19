@@ -26,8 +26,8 @@ namespace SalesWebApi {
                 var connStr = Configuration.GetConnectionString("AppDbContext"); // see appsettings.json class
                 x.UseSqlServer(connStr);
             });
-            services.AddControllers(); // added
-            services.AddCors();
+            services.AddControllers();
+            services.AddCors(); // added
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
